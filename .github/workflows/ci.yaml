@@ -23,12 +23,12 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '1.26.3'
-          
-      - name: Debug Go
+
+      - name: Fix Go Environment
         run: |
-          which go
-          go version
-          go env
+          export GOROOT=$(dirname $(dirname $(which go)))
+          export PATH=$GOROOT/bin:$PATH
+          go env -w GOROOT=$GOROOT
 
       - name: Verify Go
         run: go version
