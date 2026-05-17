@@ -45,7 +45,9 @@ jobs:
 
       - name: Run unit tests
         working-directory: app
-        run: go test ./...
+        run: |
+          unset GOROOT
+          go test ./...
 
       - name: Build Docker image
         working-directory: app
