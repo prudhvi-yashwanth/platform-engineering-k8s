@@ -26,7 +26,7 @@ COPY --from=builder /app/go-api .
 RUN chown -R appuser:appgroup /app
 
 EXPOSE 8080
-
+    
 # Run as non-root numeric user
 USER 1001
 
