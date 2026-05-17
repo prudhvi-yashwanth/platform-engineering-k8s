@@ -1,8 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
   name: go-api
   namespace: dev
+
 spec:
   replicas: 1
 
@@ -18,11 +20,36 @@ spec:
     spec:
       containers:
         - name: go-api
-          image: hashicorp/http-echo
+          image: go-api:v1
 
-          args:
-            - "-text=go-api working"
-            - "-listen=:5678"
+          imagePullPolicy: IfNotPresent
 
           ports:
-            - containerPort: 5678
+            - containerPort: 8080
+
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 15
+
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
