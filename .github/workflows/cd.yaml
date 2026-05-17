@@ -16,10 +16,23 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Deploy application
+      - name: Set image tag
         run: |
-          kubectl apply -f k8s/base/
-          kubectl apply -f k8s/ingress/
+          echo "IMAGE_TAG=${{ github.event.workflow_run.head_sha }}" >> $GITHUB_ENV
+
+      - name: Verify Docker image exists
+        run: |
+          docker images | grep $IMAGE_TAG
+
+      - name: Import image into k3d
+        run: |
+          k3d image import go-api:$IMAGE_TAG -c dev-platform
+
+      - name: Update deployment image
+        run: |
+          kubectl set image deployment/go-api \
+          go-api=go-api:$IMAGE_TAG \
+          -n dev
 
       - name: Verify rollout
         run: |
