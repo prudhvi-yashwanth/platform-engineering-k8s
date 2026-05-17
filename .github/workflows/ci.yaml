@@ -34,3 +34,7 @@ jobs:
       - name: Build application 
         working-directory: app
         run: go build -o go-api ./cmd/api/main.go
+
+      - name: Run unit tests
+        working-directory: app
+        run: go test ./...
