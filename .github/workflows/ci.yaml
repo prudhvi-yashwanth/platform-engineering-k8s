@@ -38,3 +38,7 @@ jobs:
       - name: Run unit tests
         working-directory: app
         run: go test ./...
+
+      - name: Build Docker image
+        working-directory: app
+        run: docker build -t go-api:${{ github.sha }} .
