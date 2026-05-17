@@ -20,9 +20,9 @@ spec:
     spec:
       containers:
         - name: go-api
-          image: go-api:v1
+          image: go-api:latest
 
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Never
 
           ports:
             - containerPort: 8080
