@@ -8,3 +8,4 @@ Local cloud-native platform engineering project using:
 - GitHub Actions
 - Trivy
 - Gitleaks
+- k3d local platform
