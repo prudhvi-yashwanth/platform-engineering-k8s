@@ -42,6 +42,13 @@ jobs:
         run: |
           unset GOROOT
           go build -o go-api ./cmd/api/main.go
+          
+      - name: Scan Docker image with Trivy
+        run: |
+          trivy image \
+          --severity HIGH,CRITICAL \
+          --exit-code 1 \
+          go-api:${{ github.sha }}
 
       - name: Run unit tests
         working-directory: app
