@@ -5,6 +5,10 @@ on:
     branches:
       - develop
 
+  pull_request:
+    branches:
+      - develop
+
 jobs:
   build-and-test:
     runs-on: self-hosted
@@ -53,7 +57,7 @@ jobs:
           --severity HIGH,CRITICAL \
           --exit-code 1 \
           go-api:${{ github.sha }}
-          
+
       - name: Scan repository secrets with Gitleaks
         run: |
           gitleaks detect \
