@@ -37,12 +37,16 @@ jobs:
           unset GOROOT
           go mod download
 
-      - name: Build application
+      - name: Build Docker image
         working-directory: app
         run: |
-          unset GOROOT
-          go build -o go-api ./cmd/api/main.go
+          docker build \
+          --load \
+          -t go-api:${{ github.sha }} .
           
+      - name: Verify Docker image
+        run: docker images
+
       - name: Scan Docker image with Trivy
         run: |
           trivy image \
