@@ -43,7 +43,7 @@ jobs:
           docker build \
           --load \
           -t go-api:${{ github.sha }} .
-          
+
       - name: Verify Docker image
         run: docker images
 
@@ -53,6 +53,12 @@ jobs:
           --severity HIGH,CRITICAL \
           --exit-code 1 \
           go-api:${{ github.sha }}
+          
+      - name: Scan repository secrets with Gitleaks
+        run: |
+          gitleaks detect \
+          --source . \
+          --verbose
 
       - name: Run unit tests
         working-directory: app
